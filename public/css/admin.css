@@ -1,0 +1,641 @@
+/* ==========================================
+   LAYOUT DO PAINEL ADMINISTRATIVO
+   ========================================== */
+
+.admin-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 100vh;
+  background-color: var(--bg-app);
+}
+
+/* Sidebar Estilizada */
+aside.admin-sidebar {
+  background: var(--primary-dark);
+  color: #f1f5f9;
+  border-right: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+}
+
+aside.admin-sidebar .sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+
+aside.admin-sidebar .sidebar-logo .logo-icon {
+  width: 38px;
+  height: 38px;
+  background: var(--secondary);
+  color: var(--primary-dark);
+  font-size: 1.3rem;
+}
+
+aside.admin-sidebar .sidebar-logo h1 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+}
+
+aside.admin-sidebar .sidebar-logo p {
+  font-size: 0.65rem;
+  color: var(--secondary);
+  letter-spacing: 1px;
+}
+
+/* Menu de Navegação do Admin */
+nav.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  color: #94a3b8;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.menu-item i {
+  font-size: 1.1rem;
+}
+
+.menu-item:hover, .menu-item.active {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.menu-item.active {
+  background: var(--primary-light);
+  color: #fff;
+}
+
+/* Informações do Operador no Rodapé da Sidebar */
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.user-info-widget {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  background: var(--secondary-dark);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+  font-family: 'Outfit', sans-serif;
+}
+
+.user-details h5 {
+  font-size: 0.85rem;
+  color: #fff;
+}
+
+.user-details span {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  text-transform: capitalize;
+}
+
+/* ==========================================
+   CONTEÚDO PRINCIPAL DO DASHBOARD
+   ========================================== */
+
+main.admin-main {
+  padding: 40px;
+  overflow-y: auto;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.main-header h2 {
+  font-size: 1.85rem;
+  background: linear-gradient(135deg, var(--text-main), var(--primary-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.main-header p.subtitle {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* Cards de Métricas / Indicadores */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.metric-card {
+  padding: 24px;
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.metric-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.metric-card .icon {
+  font-size: 1.5rem;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--primary-light);
+}
+
+.metric-card.color-total .icon { color: var(--primary-light); background: rgba(59, 130, 246, 0.1); }
+.metric-card.color-active .icon { color: var(--success); background: rgba(16, 185, 129, 0.1); }
+.metric-card.color-validations .icon { color: var(--secondary); background: rgba(245, 158, 11, 0.1); }
+.metric-card.color-cancelled .icon { color: var(--error); background: rgba(239, 68, 68, 0.1); }
+
+.metric-info h4 {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.metric-info .value {
+  font-size: 2rem;
+  font-weight: 800;
+  font-family: 'Outfit', sans-serif;
+  line-height: 1.1;
+  margin-top: 4px;
+}
+
+/* Painel de Gráficos e Seções */
+.dashboard-panels {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+}
+
+.chart-panel-card {
+  padding: 24px;
+  border-radius: var(--radius-md);
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-panel-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border-card);
+  padding-bottom: 10px;
+}
+
+/* Histórico de Logs / Auditoria Recente */
+.recent-logs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  max-height: 320px;
+  padding-right: 5px;
+}
+
+.log-item {
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border-card);
+  font-size: 0.8rem;
+  line-height: 1.4;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.log-item .log-meta {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.log-item .log-action {
+  font-weight: 600;
+  color: var(--primary-light);
+}
+
+/* ==========================================
+   ÁREAS DE AÇÃO DO ADMINISTRADOR
+   ========================================== */
+
+.admin-section {
+  display: none; /* Controlado via JS */
+  animation: fadeIn 0.4s ease-out;
+}
+
+.admin-section.active {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* Zonas de Upload (DOCX / XLSX) */
+.upload-zone {
+  border: 2px dashed var(--border-card);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  text-align: center;
+  background: rgba(255,255,255,0.02);
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.upload-zone:hover, .upload-zone.dragover {
+  border-color: var(--primary-light);
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.upload-zone i {
+  font-size: 3rem;
+  color: var(--text-muted);
+}
+
+.upload-zone p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* Tabelas Administrativas */
+.table-container {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-card);
+  background: var(--bg-card);
+}
+
+table.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+table.admin-table th, table.admin-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-card);
+}
+
+table.admin-table th {
+  background: rgba(255,255,255,0.02);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+}
+
+table.admin-table td {
+  font-size: 0.9rem;
+}
+
+table.admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+table.admin-table tr:hover td {
+  background: rgba(255,255,255,0.02);
+}
+
+/* Badges de Status na Tabela */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-pill.valid {
+  background: rgba(16, 185, 129, 0.12);
+  color: var(--success);
+}
+
+.status-pill.cancelled {
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--error);
+}
+
+/* Ações nas Linhas de Tabela */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-card);
+  background: transparent;
+  cursor: pointer;
+  color: var(--text-main);
+  transition: var(--transition);
+}
+
+.action-btn:hover {
+  background: var(--border-card);
+  color: var(--primary-light);
+}
+
+.action-btn.btn-cancel:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--error);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* Assistente de Mapeamento (Wizard) */
+.wizard-step {
+  display: none;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.wizard-step.active {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.mapping-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.mapping-card {
+  padding: 20px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-card);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+}
+
+.mapping-card label {
+  font-weight: 700;
+  color: var(--primary-light);
+  font-size: 0.9rem;
+}
+
+.mapping-card span.placeholder-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Fila de Processamento em Lote (Emissão Ativa) */
+.batch-loading-panel {
+  text-align: center;
+  padding: 40px;
+}
+
+.progress-bar-wrapper {
+  width: 100%;
+  height: 10px;
+  background: var(--border-card);
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 20px 0;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(to right, var(--primary-light), var(--secondary));
+  transition: width 0.3s ease;
+}
+
+/* ==========================================
+   MODAIS ADMINISTRATIVOS PREMIUM
+   ========================================== */
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.admin-modal {
+  width: 90%;
+  max-width: 550px;
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  position: relative;
+  animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+}
+
+.modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border-card);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.modal-close:hover {
+  background: var(--border-card);
+  color: var(--text-main);
+}
+
+.modal-header {
+  margin-bottom: 20px;
+}
+
+.modal-header h3 {
+  font-size: 1.4rem;
+}
+
+.modal-footer {
+  margin-top: 30px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  border-top: 1px solid var(--border-card);
+  padding-top: 20px;
+}
+
+/* Barra de Filtros e Busca no Repositório */
+.filters-bar {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filters-bar .search-wrapper {
+  flex: 1;
+  min-width: 250px;
+}
+
+/* Modais Especiais (Simulador de Email) */
+.email-simulator {
+  max-width: 650px;
+}
+
+.email-simulator .email-header-field {
+  display: flex;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-card);
+  font-size: 0.9rem;
+  gap: 8px;
+}
+
+.email-simulator .email-header-field strong {
+  width: 60px;
+  color: var(--text-muted);
+}
+
+.email-simulator .email-body-preview {
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-sm);
+  font-family: monospace;
+  font-size: 0.85rem;
+  white-space: pre-wrap;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+/* Graficos Simples CSS */
+.bar-chart-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.bar-chart-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bar-chart-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+}
+
+.bar-chart-track {
+  width: 100%;
+  height: 8px;
+  background: var(--border-card);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.bar-chart-fill {
+  height: 100%;
+  background: var(--primary-light);
+  border-radius: 4px;
+  transition: width 1s ease-out;
+}
+
+.bar-chart-row:nth-child(even) .bar-chart-fill {
+  background: var(--secondary);
+}
+
+/* Responsividade do Painel */
+@media(max-width: 1024px) {
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  aside.admin-sidebar {
+    display: none; /* Requer menu hamburguer no mobile - escopo simplificado local */
+  }
+  
+  .dashboard-panels {
+    grid-template-columns: 1fr;
+  }
+}

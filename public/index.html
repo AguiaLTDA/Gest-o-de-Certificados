@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Central de Certificados Digitais | UNIVC</title>
+  <meta name="description" content="Central oficial de emissão, consulta e validação pública de certificados acadêmicos da Universidade Virtual da Cidade.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Estilos Premium customizados para a Landing Page */
+    .landing-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 50px;
+      align-items: center;
+      text-align: left;
+      margin: 40px auto;
+      max-width: 1100px;
+      width: 90%;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .landing-welcome {
+      padding-right: 20px;
+    }
+
+    .landing-welcome h2 {
+      font-size: 2.8rem;
+      line-height: 1.15;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, var(--text-main), var(--primary-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .landing-welcome p.lead {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+
+    .benefit-item {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 24px;
+    }
+
+    .benefit-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(59, 130, 246, 0.08);
+      color: var(--primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .benefit-text h4 {
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+      color: var(--text-main);
+    }
+
+    .benefit-text p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .portals-column {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .portal-card {
+      padding: 24px;
+      border-radius: var(--radius-md);
+      transition: var(--transition);
+    }
+
+    .portal-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.15);
+      border-color: rgba(59, 130, 246, 0.25);
+    }
+
+    .portal-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .portal-card-header i {
+      font-size: 1.35rem;
+      color: var(--secondary);
+    }
+
+    .portal-card-header h3 {
+      font-size: 1.25rem;
+      margin: 0;
+    }
+
+    .portal-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+
+    /* Alert Banner */
+    .alert-danger {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      color: var(--error);
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media(max-width: 900px) {
+      .landing-layout {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        margin: 30px auto;
+      }
+      .landing-welcome h2 {
+        font-size: 2.2rem;
+      }
+    }
+  </style>
+</head>
+<body data-theme="light">
+
+  <!-- CABEÇALHO INSTITUCIONAL -->
+  <header class="inst-header glass-panel">
+    <div class="logo-container" style="cursor: pointer;" onclick="window.location.reload()">
+      <img src="logo-univc.png" alt="Logo UNIVC" style="height: 48px; object-fit: contain; margin-right: 5px;">
+      <div class="logo-text">
+        <h1>Gestão de Certificados</h1>
+        <p>Plataforma de Gestão</p>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <a href="validar.html" class="nav-link"><i class="fa-solid fa-qrcode"></i> Validar Documento</a>
+      <a href="aluno.html" class="nav-link"><i class="fa-solid fa-graduation-cap"></i> Portal do Aluno</a>
+      <button class="btn btn-outline" id="theme-toggle" title="Alternar Tema"><i class="fa-solid fa-moon"></i></button>
+    </nav>
+  </header>
+
+  <!-- CONTEÚDO PRINCIPAL (LANDING GRID) -->
+  <main class="landing-layout">
+    
+    <!-- Esquerda: Boas-vindas e Benefícios Legais -->
+    <div class="landing-welcome">
+      <h2>Central de Emissão e Validação de Certificados</h2>
+      <p class="lead">Tecnologia, segurança documental e integridade jurídica a serviço da emissão imediata e rastreabilidade acadêmica de cursos superiores.</p>
+
+      <div class="benefit-item">
+        <div class="benefit-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+        <div class="benefit-text">
+          <h4>Conformidade MEC & Portaria 330</h4>
+          <p>Processo de assinatura e registro permanente estruturado com base nas diretrizes federais para validade jurídica e fé pública acadêmica nacional.</p>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-icon"><i class="fa-solid fa-shield-halved"></i></div>
+        <div class="benefit-text">
+          <h4>Integridade Rastreável</h4>
+          <p>Cada documento emitido recebe uma numeração sequencial de registro, um código hash criptográfico exclusivo e um QR Code dinâmico para validação em segundos.</p>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+        <div class="benefit-text">
+          <h4>Eficiência Operacional</h4>
+          <p>Secretarias de graduação conseguem subir planilhas e processar a geração automatizada de centenas de certificados em PDF de alta definição com um clique.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Direita: Gateways de Entrada (Portais e Login) -->
+    <div class="portals-column">
+      
+      <!-- Card 1: Portal do Aluno -->
+      <div class="portal-card glass-panel">
+        <div class="portal-card-header">
+          <i class="fa-solid fa-graduation-cap" style="color: var(--primary-light);"></i>
+          <h3>Portal do Aluno</h3>
+        </div>
+        <p>Área acadêmica dedicada aos formandos e alunos de cursos de extensão. Insira seu CPF para pesquisar, visualizar e fazer o download seguro da segunda via digital de todos os seus certificados emitidos.</p>
+        <a href="aluno.html" class="btn btn-secondary" style="width: 100%;"><i class="fa-solid fa-arrow-right-to-bracket"></i> Acessar Portal do Aluno</a>
+      </div>
+
+      <!-- Card 2: Validação Pública -->
+      <div class="portal-card glass-panel">
+        <div class="portal-card-header">
+          <i class="fa-solid fa-qrcode" style="color: var(--success);"></i>
+          <h3>Validação de Autenticidade</h3>
+        </div>
+        <p>Comprove a originalidade e integridade legal de um documento digital emitido. Aponte a câmera do seu celular para ler o QR Code ou digite a assinatura digital constante no rodapé do certificado.</p>
+        <a href="validar.html" class="btn btn-outline" style="width: 100%;"><i class="fa-solid fa-shield-halved"></i> Validar Certificado</a>
+      </div>
+
+      <!-- Card 3: Área Administrativa (Login Integrado) -->
+      <div class="portal-card glass-panel" style="border-color: rgba(245, 158, 11, 0.25);">
+        <div class="portal-card-header">
+          <i class="fa-solid fa-user-shield" style="color: var(--secondary);"></i>
+          <h3>Acesso Administrativo</h3>
+        </div>
+        <p>Área restrita voltada a diretores, reitores e operadores da secretaria acadêmica para emissões em lote, configuração de novos modelos e controle de logs.</p>
+        
+        <div id="login-alert" class="alert-danger hidden">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          <span id="login-alert-text">Credenciais incorretas.</span>
+        </div>
+
+        <form id="login-form" style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="username" style="font-size: 0.75rem;">Usuário Institucional</label>
+            <input type="email" id="username" class="input-field" placeholder="felipe.souza@ivc.br" style="padding: 10px 12px; font-size: 0.9rem;" required>
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="password" style="font-size: 0.75rem;">Senha de Acesso</label>
+            <input type="password" id="password" class="input-field" placeholder="••••••••" style="padding: 10px 12px; font-size: 0.9rem;" required>
+          </div>
+          <button type="submit" class="btn btn-primary" id="btn-login-submit" style="width: 100%; padding: 11px; margin-top: 5px;">
+            <i class="fa-solid fa-lock"></i> Acessar Painel de Gestão
+          </button>
+        </form>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- RODAPÉ INSTITUCIONAL -->
+  <footer class="inst-footer">
+    <p>© 2026 Universidade Virtual da Cidade (UNIVC). Todos os direitos reservados. Validação jurídica garantida.</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/auth.js"></script>
+  <script>
+    // Configurações de Tema (Claro / Escuro)
+    const themeBtn = document.getElementById('theme-toggle');
+    themeBtn.addEventListener('click', () => {
+      const currentTheme = document.body.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.body.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeBtn.innerHTML = newTheme === 'dark' ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.body.setAttribute('data-theme', savedTheme);
+      themeBtn.innerHTML = savedTheme === 'dark' ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+      
+      // Se já estiver logado, redireciona para o painel administrativo automaticamente
+      if (Auth.isLoggedIn()) {
+        window.location.href = 'admin.html';
+      }
+    });
+
+    // Controlador de Login Administrativo
+    const loginForm = document.getElementById('login-form');
+    const loginAlert = document.getElementById('login-alert');
+    const loginAlertText = document.getElementById('login-alert-text');
+    const submitBtn = document.getElementById('btn-login-submit');
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      loginAlert.classList.add('hidden');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Autenticando...';
+
+      try {
+        const success = await Auth.login(username, password);
+        if (success) {
+          window.location.href = 'admin.html';
+        } else {
+          loginAlertText.textContent = 'Acesso negado: Credenciais administrativas inválidas.';
+          loginAlert.classList.remove('hidden');
+        }
+      } catch (err) {
+        loginAlertText.textContent = 'Erro ao se conectar ao servidor acadêmico.';
+        loginAlert.classList.remove('hidden');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fa-solid fa-lock"></i> Acessar Painel de Gestão';
+      }
+    });
+  </script>
+</body>
+</html>

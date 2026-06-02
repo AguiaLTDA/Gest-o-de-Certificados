@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Central de Certificados - Painel Administrativo | UNIVC</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <div class="admin-layout">
+    
+    <!-- BARRA LATERAL (SIDEBAR) -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-logo">
+        <img src="logo-univc.png" alt="Logo UNIVC" style="height: 42px; object-fit: contain; margin-right: 8px;">
+        <div>
+          <h1>Gestão de Certificados</h1>
+          <p>Plataforma de Gestão</p>
+        </div>
+      </div>
+
+      <nav class="sidebar-menu">
+        <div class="menu-item active" id="menu-dashboard" onclick="switchSection('dashboard')">
+          <i class="fa-solid fa-chart-line"></i> Dashboard
+        </div>
+        <div class="menu-item" id="menu-templates" onclick="switchSection('templates')">
+          <i class="fa-solid fa-file-invoice"></i> Modelos (Imagens)
+        </div>
+        <div class="menu-item" id="menu-emission" onclick="switchSection('emission')">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Emissão em Lote
+        </div>
+        <div class="menu-item" id="menu-repo" onclick="switchSection('repo')">
+          <i class="fa-solid fa-database"></i> Repositório Digital
+        </div>
+        <div class="menu-item" id="menu-audit" onclick="switchSection('audit')">
+          <i class="fa-solid fa-clipboard-list"></i> Logs Auditoria
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-info-widget">
+          <div class="user-avatar" id="user-avatar-char">A</div>
+          <div class="user-details">
+            <h5 id="user-display-name">Carregando...</h5>
+            <span id="user-display-role">-</span>
+          </div>
+        </div>
+        <button class="btn btn-outline" style="width: 100%; border-color: rgba(255,255,255,0.1); color: #fff;" onclick="Auth.logout()">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i> Desconectar
+        </button>
+      </div>
+    </aside>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="admin-main">
+      
+      <!-- Cabeçalho Superior -->
+      <div class="main-header">
+        <div>
+          <h2 id="page-title">Painel de Indicadores</h2>
+          <p class="subtitle" id="page-subtitle">Visão geral do sistema de emissões</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-outline" id="theme-toggle" title="Alternar Tema"><i class="fa-solid fa-moon"></i></button>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           SEÇÃO 1: DASHBOARD
+           ========================================== -->
+      <section id="section-dashboard" class="admin-section active">
+        <!-- Indicadores Rápidos -->
+        <div class="metrics-grid">
+          
+          <div class="glass-panel metric-card color-total">
+            <div class="icon"><i class="fa-solid fa-file-invoice"></i></div>
+            <div class="metric-info">
+              <h4>Total Emitido</h4>
+              <div class="value" id="stat-total">0</div>
+            </div>
+          </div>
+
+          <div class="glass-panel metric-card color-active">
+            <div class="icon"><i class="fa-solid fa-circle-check"></i></div>
+            <div class="metric-info">
+              <h4>Certificados Ativos</h4>
+              <div class="value" id="stat-active">0</div>
+            </div>
+          </div>
+
+          <div class="glass-panel metric-card color-validations">
+            <div class="icon"><i class="fa-solid fa-qrcode"></i></div>
+            <div class="metric-info">
+              <h4>Total Validados</h4>
+              <div class="value" id="stat-validations">0</div>
+            </div>
+          </div>
+
+          <div class="glass-panel metric-card color-cancelled">
+            <div class="icon"><i class="fa-solid fa-ban"></i></div>
+            <div class="metric-info">
+              <h4>Inutilizados / Cancelados</h4>
+              <div class="value" id="stat-cancelled">0</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Grade de Estatísticas e Histórico -->
+        <div class="dashboard-panels">
+          
+          <!-- Estatísticas por Cursos -->
+          <div class="glass-panel chart-panel-card">
+            <h3>Emissões por Curso (Top 5)</h3>
+            <div class="bar-chart-container" id="courses-chart-container">
+              <!-- Renderizado via JS -->
+            </div>
+          </div>
+
+          <!-- Histórico de Auditoria -->
+          <div class="glass-panel chart-panel-card">
+            <h3>Logs Recentes de Auditoria</h3>
+            <div class="recent-logs-list" id="dashboard-logs-container">
+              <!-- Renderizado via JS -->
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SEÇÃO 2: MODELOS DOCX (TEMPLATES)
+           ========================================== -->
+      <section id="section-templates" class="admin-section">
+        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 30px;">
+          
+          <!-- Área de Upload de Template -->
+          <div class="glass-panel" style="padding: 30px; display: flex; flex-direction: column; gap: 20px;">
+            <h3>Subir Novo Modelo (.PNG ou .JPG)</h3>
+            
+            <form id="template-upload-form" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 15px;">
+              <div class="form-group">
+                <label for="tpl-name">Nome do Modelo</label>
+                <input type="text" id="tpl-name" class="input-field" placeholder="Ex: Certificado Graduação Oficial" required>
+              </div>
+              <div class="form-group">
+                <label for="tpl-desc">Descrição</label>
+                <input type="text" id="tpl-desc" class="input-field" placeholder="Ex: Modelo oficial com selo mecânico">
+              </div>
+              <div class="form-group">
+                <label for="tpl-theme">Estilo de Design Padrão</label>
+                <select id="tpl-theme" class="input-field" style="background: rgba(255,255,255,0.05); color: var(--text-main);">
+                  <option value="classic" style="color: #000;">Classic Gold (Clássico com Borda Ornamentada)</option>
+                  <option value="royal" style="color: #000;">Royal Navy (Assoalho Lateral Azul e Ouro)</option>
+                  <option value="modern" style="color: #000;">Modern Minimalist (Cantoneiras Geométricas)</option>
+                  <option value="emerald" style="color: #000;">Emerald Academic (Verde Esmeralda Presidencial)</option>
+                </select>
+              </div>
+              
+              <div class="upload-zone" id="tpl-drag-zone" onclick="document.getElementById('tpl-file-input').click()">
+                <i class="fa-solid fa-file-image" style="color: var(--primary-light); font-size: 2.5rem; margin-bottom: 10px;"></i>
+                <p><strong>Arraste o arquivo de imagem aqui</strong> ou clique para selecionar do computador.</p>
+                <span id="tpl-file-name-preview" style="font-size: 0.8rem; color: var(--success); font-weight: 600;"></span>
+                <input type="file" id="tpl-file-input" name="templateFile" accept=".png,.jpg,.jpeg" style="display: none;" required>
+              </div>
+
+              <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fa-solid fa-cloud-arrow-up"></i> Carregar Modelo</button>
+            </form>
+          </div>
+
+          <!-- Listagem de Templates -->
+          <div class="glass-panel" style="padding: 30px;">
+            <h3>Modelos Oficiais Disponíveis</h3>
+            <div class="table-container" style="margin-top: 15px;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Nome</th>
+                    <th>Design</th>
+                    <th>Campos Identificados</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="templates-list-container">
+                  <!-- Injetado dinamicamente -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SEÇÃO 3: EMISSÃO EM LOTE
+           ========================================== -->
+      <section id="section-emission" class="admin-section">
+        
+        <!-- Passo 1: Carregar Planilha -->
+        <div class="glass-panel wizard-step active" id="emission-step-1" style="padding: 40px;">
+          <h3>Passo 1: Enviar Planilha de Alunos</h3>
+          <p style="color: var(--text-muted); margin-bottom: 25px;">Suba uma planilha contendo os dados dos formandos em formato Excel (.xlsx) ou texto delimitado por vírgula (.csv).</p>
+          
+          <div style="max-width: 500px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px;">
+            <div class="form-group">
+              <label for="emission-tpl-select">Selecione o Modelo de Certificado</label>
+              <select id="emission-tpl-select" class="input-field" style="background: rgba(255,255,255,0.05); color: var(--text-main);">
+                <!-- Injetado dinamicamente -->
+              </select>
+              <div id="expected-columns-info" style="margin-top: 12px; font-size: 0.85rem; color: var(--primary-light); line-height: 1.5; background: rgba(59,130,246,0.05); padding: 12px; border-radius: var(--radius-sm); border: 1px dashed rgba(59,130,246,0.2); display: none;">
+                <!-- Preenchido via JS -->
+              </div>
+            </div>
+
+            <div class="upload-zone" id="list-drag-zone" onclick="document.getElementById('list-file-input').click()">
+              <i class="fa-solid fa-file-excel" style="color: var(--success);"></i>
+              <p><strong>Arraste sua planilha XLSX ou CSV aqui</strong> ou clique para selecionar.</p>
+              <span id="list-file-name-preview" style="font-size: 0.8rem; color: var(--success); font-weight: 600;"></span>
+              <input type="file" id="list-file-input" name="studentListFile" accept=".xlsx, .xls, .csv" style="display: none;">
+            </div>
+            
+            <button class="btn btn-primary" id="btn-next-to-mapping" disabled>Avançar para Mapeamento <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <!-- Passo 2: Mapear Placeholders -->
+        <div class="glass-panel wizard-step" id="emission-step-2" style="padding: 40px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <div>
+              <h3>Passo 2: Mapeamento de Placeholders</h3>
+              <p style="color: var(--text-muted); font-size: 0.9rem;">Relacione os campos dinâmicos identificados no template Word com as colunas da sua planilha.</p>
+            </div>
+            <button class="btn btn-outline" id="btn-back-to-upload"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
+          </div>
+
+          <div class="mapping-list" id="mapping-list-container">
+            <!-- Mapeamentos gerados dinamicamente via JS -->
+          </div>
+
+          <div style="margin-top: 40px; display: flex; justify-content: flex-end; gap: 15px; border-top: 1px solid var(--border-card); padding-top: 20px;">
+            <button class="btn btn-primary" id="btn-start-batch-emission" style="font-size: 1.1rem; padding: 12px 28px;">
+              <i class="fa-solid fa-wand-magic-sparkles"></i> Iniciar Emissão em Lote
+            </button>
+          </div>
+        </div>
+
+        <!-- Passo 3: Progresso de Emissão -->
+        <div class="glass-panel wizard-step" id="emission-step-3" style="padding: 40px;">
+          <div class="batch-loading-panel">
+            <h3 id="batch-progress-title">Processando Lote de Certificados...</h3>
+            <p style="color: var(--text-muted); margin-top: 5px;">Aguarde, estamos gerando e arquivando os documentos digitais no repositório.</p>
+
+            <div class="progress-bar-wrapper">
+              <div class="progress-bar-fill" id="batch-progress-fill"></div>
+            </div>
+
+            <div style="font-size: 1.25rem; font-weight: 700; margin-top: 15px;">
+              Progresso: <span id="batch-progress-percent">0</span>% (<span id="batch-progress-current">0</span>/<span id="batch-progress-total">0</span>)
+            </div>
+            <p style="font-size: 0.85rem; color: var(--success); font-weight: 600; margin-top: 5px;" id="batch-current-student"></p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ==========================================
+           SEÇÃO 4: REPOSITÓRIO DIGITAL DE CERTIFICADOS
+           ========================================== -->
+      <section id="section-repo" class="admin-section">
+        
+        <!-- Barra de Ações & Filtros -->
+        <div class="glass-panel filters-bar" style="padding: 20px; display: flex; flex-wrap: wrap; gap: 15px; align-items: center; justify-content: space-between;">
+          <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; flex: 1;">
+            <div class="search-wrapper" style="min-width: 250px; flex: 1;">
+              <input type="text" id="repo-search-input" class="input-field" placeholder="Buscar por Nome, CPF, Código..." style="padding: 10px 14px; font-size: 0.9rem; width: 100%;">
+            </div>
+            
+            <div class="filter-group">
+              <select id="repo-status-filter" class="input-field" style="padding: 10px 14px; font-size: 0.9rem; background: rgba(255,255,255,0.05); color: var(--text-main);">
+                <option value="" style="color: #000;">Todos os Status</option>
+                <option value="valido" style="color: #000;">Válidos</option>
+                <option value="cancelado" style="color: #000;">Cancelados</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <select id="repo-course-filter" class="input-field" style="padding: 10px 14px; font-size: 0.9rem; background: rgba(255,255,255,0.05); color: var(--text-main);">
+                <option value="" style="color: #000;">Todos os Cursos</option>
+                <!-- Preenchido dinamicamente via JS -->
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <select id="repo-sort-order" class="input-field" style="padding: 10px 14px; font-size: 0.9rem; background: rgba(255,255,255,0.05); color: var(--text-main);">
+                <option value="number_desc" style="color: #000;">Ordenar por: Nº Registro (Desc)</option>
+                <option value="number_asc" style="color: #000;">Ordenar por: Nº Registro (Asc)</option>
+                <option value="course_asc" style="color: #000;">Ordenar por: Curso (A-Z)</option>
+                <option value="model_asc" style="color: #000;">Ordenar por: Modelo (A-Z)</option>
+              </select>
+            </div>
+          </div>
+          
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <button class="btn btn-primary" id="btn-bulk-cancel" style="padding: 10px 16px; background: var(--error); border-color: var(--error); display: none;" disabled>
+              <i class="fa-solid fa-ban"></i> Descarte em Massa (<span id="bulk-cancel-count">0</span>)
+            </button>
+            <button class="btn btn-outline" id="btn-export-csv" style="padding: 10px 16px;"><i class="fa-solid fa-file-excel"></i> Exportar Relatório</button>
+          </div>
+        </div>
+
+        <!-- Tabela do Repositório -->
+        <div class="glass-panel" style="padding: 30px;">
+          <div class="table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th style="width: 40px; text-align: center;"><input type="checkbox" id="repo-select-all" style="cursor: pointer;"></th>
+                  <th>Nº Registro</th>
+                  <th>Acadêmico</th>
+                  <th>CPF</th>
+                  <th>Curso</th>
+                  <th>Código Validador</th>
+                  <th>Status</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="repo-table-body">
+                <!-- Injetado via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SEÇÃO 5: LOGS DE AUDITORIA COMPLETOS
+           ========================================== -->
+      <section id="section-audit" class="admin-section">
+        <div class="glass-panel" style="padding: 30px;">
+          <h3>Histórico Completo de Ações e Auditoria</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px;">Rastreabilidade total das alterações, logins e emissões de certificados.</p>
+          
+          <div class="table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Data/Hora</th>
+                  <th>Usuário</th>
+                  <th>Ação</th>
+                  <th>Detalhes do Evento</th>
+                </tr>
+              </thead>
+              <tbody id="audit-table-body">
+                <!-- Injetado dinamicamente -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ==========================================
+       MODAL 1: PREVIEW / TEMA DO TEMPLATE
+       ========================================== -->
+  <div class="modal-backdrop" id="modal-theme">
+    <div class="glass-panel admin-modal">
+      <button class="modal-close" onclick="closeModal('theme')"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-header">
+        <h3>Configurar Tema do Modelo</h3>
+      </div>
+      <div class="form-group">
+        <label for="modal-theme-select">Selecione o Tema Acadêmico</label>
+        <select id="modal-theme-select" class="input-field" style="background: rgba(255,255,255,0.05); color: var(--text-main);">
+          <option value="classic" style="color: #000;">Classic Gold (Clássico Dourado)</option>
+          <option value="royal" style="color: #000;">Royal Navy (Faixa Azul lateral)</option>
+          <option value="modern" style="color: #000;">Modern Minimalist (Limpo Cantoneiras)</option>
+          <option value="emerald" style="color: #000;">Emerald Academic (Verde Imperial)</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('theme')">Cancelar</button>
+        <button class="btn btn-primary" id="btn-save-template-theme">Salvar Preferência</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL: VISUALIZAR E EDITAR TEXTO DO MODELO
+       ========================================== -->
+  <div class="modal-backdrop" id="modal-text">
+    <div class="glass-panel admin-modal" style="width: 650px; max-width: 95%;">
+      <button class="modal-close" onclick="closeModal('text')"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-header">
+        <h3 id="modal-text-title">Visualizar / Editar Texto do Modelo</h3>
+      </div>
+      <div class="form-group" style="margin-top: 15px;">
+        <label for="modal-text-content">Conteúdo do Texto (Suporta placeholders como {{nome}}, {{curso}}, etc.)</label>
+        <textarea id="modal-text-content" class="input-field" rows="12" style="font-family: monospace; font-size: 0.9rem; resize: vertical; line-height: 1.5; background: rgba(255,255,255,0.05); color: var(--text-main); width: 100%; box-sizing: border-box; padding: 12px;" required></textarea>
+      </div>
+      <div class="modal-footer" style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+        <span id="modal-text-permission-notice" style="font-size: 0.82rem; color: var(--primary-light); font-weight: 500;"></span>
+        <div style="display: flex; gap: 10px;">
+          <button class="btn btn-outline" onclick="closeModal('text')">Fechar</button>
+          <button class="btn btn-primary" id="btn-save-template-text">Salvar Alterações</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL: VISUALIZAR MODELO (PREVIEW VISUAL)
+       ========================================== -->
+  <div class="modal-backdrop" id="modal-preview">
+    <div class="glass-panel admin-modal" style="width: 760px; max-width: 95%; padding: 25px;">
+      <button class="modal-close" onclick="closeModal('preview')"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-header">
+        <h3 id="modal-preview-title">Visualização Visual do Modelo</h3>
+      </div>
+      
+      <div class="modal-body" style="padding: 20px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px; width: 100%;">
+        <!-- Container onde o certificado renderizado será injetado, com dimensões escaladas a 60% -->
+        <div class="certificate-preview-wrapper" style="width: 673px; height: 476px; overflow: hidden; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: #0f172a; display: flex; justify-content: flex-start; align-items: flex-start; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+          <div id="modal-preview-certificate-container" style="transform: scale(0.6); transform-origin: top left; width: 1122px; height: 793px;">
+            <!-- Injetado dinamicamente via JS -->
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center; gap: 10px; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px;">
+        <a id="btn-download-original-file" href="#" class="btn btn-outline" target="_blank" style="padding: 10px 18px; text-decoration: none;">
+          <i class="fa-solid fa-cloud-download"></i> Baixar Arquivo Anexo
+        </a>
+        <button class="btn btn-primary" onclick="closeModal('preview')" style="padding: 10px 24px;">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL 2: SIMULADOR DE ENVIO DE E-MAIL
+       ========================================== -->
+  <div class="modal-backdrop" id="modal-email">
+    <div class="glass-panel admin-modal email-simulator">
+      <button class="modal-close" onclick="closeModal('email')"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-envelope"></i> Envio de E-mail Acadêmico (Simulador)</h3>
+      </div>
+      
+      <div class="email-header-field">
+        <strong>Para:</strong>
+        <input type="email" id="email-to-input" class="input-field" style="padding: 4px 8px; border: none; background: transparent; font-size: 0.9rem;" placeholder="aluno@email.com">
+      </div>
+      
+      <div class="email-header-field">
+        <strong>Assunto:</strong>
+        <span id="email-subject-preview" style="font-weight: 500;">-</span>
+      </div>
+
+      <div class="email-body-preview" id="email-body-preview">
+        <!-- Preview de texto -->
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('email')">Fechar</button>
+        <button class="btn btn-primary" id="btn-send-simulated-email"><i class="fa-solid fa-paper-plane"></i> Enviar Notificação</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL 3: INUTILIZAR / CANCELAR CERTIFICADO
+       ========================================== -->
+  <div class="modal-backdrop" id="modal-cancel">
+    <div class="glass-panel admin-modal">
+      <button class="modal-close" onclick="closeModal('cancel')"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-header">
+        <h3 style="color: var(--error);"><i class="fa-solid fa-ban"></i> Cancelamento de Certificado</h3>
+      </div>
+      
+      <p style="font-size: 0.9rem; margin-bottom: 15px; color: var(--text-muted);">
+        Atenção: Ao cancelar este certificado, ele será imediatamente invalidado no portal público e não poderá ser utilizado legalmente pelo formando.
+      </p>
+
+      <div class="form-group">
+        <label for="cancel-reason-input">Motivo de Cancelamento / Inutilização</label>
+        <textarea id="cancel-reason-input" class="input-field" rows="3" placeholder="Ex: Cancelado devido a duplicidade no lote ou erro na planilha de notas." style="resize: none;" required></textarea>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('cancel')">Voltar</button>
+        <button class="btn btn-primary" id="btn-confirm-cancellation" style="background: var(--error); border-color: var(--error);">Confirmar Inutilização</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEWPORT DE RENDERIZAÇÃO OFFSCREEN (COMPILAÇÃO PDF INVISÍVEL) -->
+  <div id="pdf-offscreen-rendering-zone" style="position: absolute; left: -9999px; top: -9999px; width: 1122px; height: 793px;">
+    <!-- Injetado temporariamente via JS para compilar PDF -->
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/certificate-renderer.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

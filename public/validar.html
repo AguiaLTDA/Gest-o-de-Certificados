@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Validação de Certificados Acadêmicos | UNIVC</title>
+  <meta name="description" content="Validador oficial de autenticidade documental da Universidade Virtual da Cidade.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- HTML5 QR Code Scanner Library (Local processing via browser) -->
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+</head>
+<body>
+
+  <!-- CABEÇALHO -->
+  <header class="inst-header glass-panel">
+    <div class="logo-container" style="cursor: pointer;" onclick="window.location.href='index.html'">
+      <img src="logo-univc.png" alt="Logo UNIVC" style="height: 48px; object-fit: contain; margin-right: 5px;">
+      <div class="logo-text">
+        <h1>Gestão de Certificados</h1>
+        <p>Plataforma de Gestão</p>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <a href="validar.html" class="nav-link active"><i class="fa-solid fa-qrcode"></i> Validar Documento</a>
+      <a href="aluno.html" class="nav-link"><i class="fa-solid fa-graduation-cap"></i> Portal do Aluno</a>
+      <button class="btn btn-outline" id="theme-toggle" title="Alternar Tema"><i class="fa-solid fa-moon"></i></button>
+    </nav>
+  </header>
+
+  <!-- VALIDAÇÃO CONTAINER -->
+  <main class="main-container validate-container">
+    
+    <div style="margin-bottom: 30px;">
+      <h2 style="font-size: 2.2rem; margin-bottom: 8px;">Validação Pública de Autenticidade</h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">
+        Comprove a integridade acadêmica do documento inserindo o código de validação do rodapé ou acionando a câmera para escanear o QR Code.
+      </p>
+    </div>
+
+    <!-- CAIXA DE BUSCA -->
+    <div class="glass-panel validate-search-box">
+      <div class="form-group" style="margin-bottom: 0;">
+        <label for="validation-code">Código de Autenticação</label>
+        <div class="search-input-wrapper">
+          <input type="text" id="validation-code" class="input-field" placeholder="Ex: UNIVC-2026-ABCD-1234" style="font-family: monospace; letter-spacing: 1px;" required>
+          <button class="btn btn-primary" id="btn-validate" style="white-space: nowrap;">
+            <i class="fa-solid fa-shield-halved"></i> Validar Registro
+          </button>
+        </div>
+      </div>
+
+      <!-- SCANNER DE CÂMERA -->
+      <div class="qr-scanner-section">
+        <button class="btn btn-outline" id="btn-toggle-scan" style="width: 100%; border-style: dashed;">
+          <i class="fa-solid fa-camera"></i> Escanear QR Code com a Câmera
+        </button>
+        
+        <div style="margin-top: 15px; display: flex; flex-direction: column; align-items: center;">
+          <!-- Div de render do leitor da câmera -->
+          <div id="reader"></div>
+          <button class="btn btn-outline" id="btn-stop-scan" style="margin-top: 10px; display: none; background: rgba(239,68,68,0.1); color: var(--error); border-color: rgba(239,68,68,0.3);">
+            <i class="fa-solid fa-circle-stop"></i> Interromper Câmera
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ALERTA DE ERRO -->
+    <div id="val-error" class="glass-panel" style="padding: 24px; border-radius: var(--radius-md); display: none; background: rgba(239, 68, 68, 0.12); border-color: rgba(239,68,68,0.3); text-align: left; margin-bottom: 30px; animation: slideUp 0.3s ease;">
+      <div style="display: flex; gap: 15px; align-items: center;">
+        <div class="badge-status badge-invalid"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div>
+          <h4 style="color: var(--error); font-size: 1.1rem; margin-bottom: 3px;">Documento Não Validado!</h4>
+          <p id="val-error-text" style="color: var(--text-main); font-size: 0.9rem;">
+            O código informado não corresponde a nenhum certificado digital emitido ou registrado na biblioteca digital da instituição.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TELA DE RESULTADOS (SUCESSO OU CANCELADO) -->
+    <div id="val-success" class="glass-panel validation-result">
+      
+      <!-- Status Badge -->
+      <div class="result-header">
+        <div id="status-badge-container">
+          <!-- Badge injetado dinamicamente -->
+        </div>
+        <div class="result-title">
+          <h3 id="result-status-title">Certificado Válido</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem;">Documento registrado e verificado legalmente</p>
+        </div>
+      </div>
+
+      <!-- Grade de Dados -->
+      <div class="result-grid">
+        
+        <div class="result-item">
+          <span class="label">Nome do Aluno</span>
+          <span class="val" id="res-student-name" style="font-weight: 700;">-</span>
+        </div>
+
+        <div class="result-item">
+          <span class="label">Curso de Graduação</span>
+          <span class="val" id="res-course-name" style="font-weight: 600; color: var(--primary-light);">-</span>
+        </div>
+
+        <div class="result-item">
+          <span class="label">CPF do Aluno</span>
+          <span class="val" id="res-student-cpf">-</span>
+        </div>
+
+        <div class="result-item">
+          <span class="label">Número de Registro</span>
+          <span class="val" id="res-cert-number" style="font-family: monospace;">-</span>
+        </div>
+
+        <div class="result-item">
+          <span class="label">Data de Emissão</span>
+          <span class="val" id="res-issue-date">-</span>
+        </div>
+
+        <div class="result-item">
+          <span class="label">Assinatura / Validação</span>
+          <span class="val" id="res-validation-code" style="font-family: monospace; font-weight: 600; color: var(--secondary-dark);">-</span>
+        </div>
+
+        <div class="result-item" id="cancellation-reason-item" style="grid-column: span 2; display: none;">
+          <span class="label" style="color: var(--error);">Motivo da Inutilização</span>
+          <span class="val" id="res-cancel-reason" style="color: var(--error); font-weight: 500;">-</span>
+        </div>
+
+      </div>
+
+      <!-- Visualização Integrada do PDF Oficial -->
+      <div class="pdf-viewer-container" id="pdf-view-block">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <h4 style="font-size: 1.1rem;"><i class="fa-solid fa-file-pdf"></i> Visualizador do Documento Oficial</h4>
+          <a href="#" id="btn-download-pdf" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.8rem;" target="_blank">
+            <i class="fa-solid fa-download"></i> Baixar PDF
+          </a>
+        </div>
+        <iframe id="pdf-frame" class="pdf-frame" src=""></iframe>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- RODAPÉ -->
+  <footer class="inst-footer">
+    <p>© 2026 Universidade Virtual da Cidade (UNIVC). Todos os direitos reservados.</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/validar.js"></script>
+  <script>
+    // Toggle Tema
+    const themeBtn = document.getElementById('theme-toggle');
+    themeBtn.addEventListener('click', () => {
+      const currentTheme = document.body.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.body.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeBtn.innerHTML = newTheme === 'dark' ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.body.setAttribute('data-theme', savedTheme);
+      themeBtn.innerHTML = savedTheme === 'dark' ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+      
+      // Auto-preencher código de validação se vier pela URL query ?codigo=...
+      const urlParams = new URLSearchParams(window.location.search);
+      const code = urlParams.get('codigo') || urlParams.get('code');
+      if (code) {
+        document.getElementById('validation-code').value = code;
+        validarCodigo(code);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal do Aluno - Consulta de Certificados | UNIVC</title>
+  <meta name="description" content="Acesse e baixe seus certificados oficiais da Universidade Virtual da Cidade.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- CABEÇALHO -->
+  <header class="inst-header glass-panel">
+    <div class="logo-container" style="cursor: pointer;" onclick="window.location.href='index.html'">
+      <img src="logo-univc.png" alt="Logo UNIVC" style="height: 48px; object-fit: contain; margin-right: 5px;">
+      <div class="logo-text">
+        <h1>Gestão de Certificados</h1>
+        <p>Plataforma de Gestão</p>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <a href="validar.html" class="nav-link"><i class="fa-solid fa-qrcode"></i> Validar Documento</a>
+      <a href="aluno.html" class="nav-link active"><i class="fa-solid fa-graduation-cap"></i> Portal do Aluno</a>
+      <button class="btn btn-outline" id="theme-toggle" title="Alternar Tema"><i class="fa-solid fa-moon"></i></button>
+    </nav>
+  </header>
+
+  <!-- CONTEÚDO -->
+  <main class="main-container">
+    
+    <div style="margin-bottom: 30px;">
+      <h2 style="font-size: 2.2rem; margin-bottom: 8px;">Portal de Certificações do Aluno</h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">
+        Insira seu CPF abaixo para pesquisar, visualizar e emitir a segunda via digital de todos os seus certificados acadêmicos registrados.
+      </p>
+    </div>
+
+    <!-- CAIXA DE BUSCA POR CPF -->
+    <div class="glass-panel student-search-box">
+      <div class="form-group" style="margin-bottom: 0;">
+        <label for="student-cpf">CPF do Acadêmico</label>
+        <div class="search-input-wrapper">
+          <input type="text" id="student-cpf" class="input-field" placeholder="000.000.000-00" style="font-size: 1.1rem; text-align: center; letter-spacing: 1px;" maxlength="14" required>
+          <button class="btn btn-primary" id="btn-search-student" style="white-space: nowrap; padding: 12px 24px;">
+            <i class="fa-solid fa-magnifying-glass"></i> Consultar Certificados
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MENSAGEM NENHUM ENCONTRADO -->
+    <div id="no-certs-alert" class="glass-panel" style="padding: 24px; border-radius: var(--radius-md); display: none; background: rgba(245, 158, 11, 0.12); border-color: rgba(245,158,11,0.3); text-align: left; max-width: 600px; margin: 0 auto 30px auto; animation: slideUp 0.3s ease;">
+      <div style="display: flex; gap: 15px; align-items: center;">
+        <div class="badge-status" style="background: rgba(245, 158, 11, 0.15); color: var(--warning);"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div>
+          <h4 style="color: var(--warning); font-size: 1.1rem; margin-bottom: 3px;">Nenhum Registro Localizado!</h4>
+          <p style="color: var(--text-main); font-size: 0.9rem;">
+            Não encontramos nenhum certificado acadêmico emitido para o CPF informado. Se concluiu seu curso recentemente, por favor, aguarde o prazo de lançamento da secretaria.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- LISTAGEM DE CERTIFICADOS ENCONTRADOS -->
+    <div id="student-certs-section" class="certs-list">
+      <h3 style="font-size: 1.35rem; margin-bottom: 15px; border-bottom: 1px solid var(--border-card); padding-bottom: 8px;">
+        <i class="fa-solid fa-circle-check" style="color: var(--success);"></i> Certificados Registrados (<span id="certs-count">0</span>)
+      </h3>
+      
+      <div id="certs-cards-container" style="display: flex; flex-direction: column; gap: 15px;">
+        <!-- Injetado dinamicamente -->
+      </div>
+    </div>
+
+  </main>
+
+  <!-- RODAPÉ -->
+  <footer class="inst-footer">
+    <p>© 2026 Universidade Virtual da Cidade (UNIVC). Todos os direitos reservados.</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/aluno.js"></script>
+  <script>
+    // Toggle Tema
+    const themeBtn = document.getElementById('theme-toggle');
+    themeBtn.addEventListener('click', () => {
+      const currentTheme = document.body.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.body.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeBtn.innerHTML = newTheme === 'dark' ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.body.setAttribute('data-theme', savedTheme);
+      themeBtn.innerHTML = savedTheme === 'dark' ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,466 @@
+/* ==========================================
+   FOLHA DE CERTIFICADO A4 PAISAGEM (PRINT READY)
+   ========================================== */
+
+/* Folha Virtual A4 Paisagem (297mm x 210mm) */
+.certificate-page-container {
+  width: 1122px; /* Proporção exata para A4 a 96 DPI */
+  height: 793px;
+  padding: 40px;
+  background-color: #ffffff;
+  color: #1e293b;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  font-family: 'Playfair Display', Georgia, serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* Ocultar visualmente mas manter na impressão de página cheia */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .certificate-page-container, .certificate-page-container * {
+    visibility: visible;
+  }
+  .certificate-page-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 297mm;
+    height: 210mm;
+    box-shadow: none;
+    padding: 15mm;
+  }
+}
+
+/* Elementos de Estrutura Comuns */
+.cert-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.cert-logo {
+  width: 64px;
+  height: 64px;
+  background: #1e3a8a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 2.2rem;
+  font-weight: 800;
+  font-family: 'Outfit', sans-serif;
+  border: 2px solid #d97706;
+}
+
+.cert-institution {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #0f172a;
+}
+
+.cert-title-wrapper {
+  margin: 15px 0;
+}
+
+.cert-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.3rem;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #1e3a8a;
+}
+
+.cert-title-divider {
+  width: 150px;
+  height: 3px;
+  background: #d97706;
+  margin: 8px auto 0 auto;
+}
+
+/* Corpo do Certificado */
+.cert-body {
+  padding: 0 60px;
+  font-size: 1.4rem;
+  line-height: 1.8;
+  color: #334155;
+}
+
+.cert-body p {
+  margin-bottom: 15px;
+}
+
+.cert-student-name {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #0f172a;
+  display: block;
+  margin: 10px 0;
+  border-bottom: 2px dashed #cbd5e1;
+  padding-bottom: 5px;
+}
+
+.cert-course-highlight {
+  font-weight: 700;
+  color: #1e3a8a;
+}
+
+/* Área de Assinaturas */
+.cert-signatures {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 40px;
+  padding: 0 100px;
+}
+
+.signature-block {
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.signature-line {
+  width: 100%;
+  height: 1px;
+  background: #94a3b8;
+}
+
+.signature-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.signature-role {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+/* Rodapé de Segurança (Código + QR Code) */
+.cert-security-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 40px;
+  margin-bottom: 10px;
+}
+
+.security-info {
+  text-align: left;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.security-info strong {
+  color: #1e293b;
+}
+
+.security-qr-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: #f8fafc;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.qr-code-placeholder {
+  width: 72px;
+  height: 72px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-code-placeholder img {
+  width: 100%;
+  height: 100%;
+}
+
+.qr-desc {
+  text-align: left;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  color: #64748b;
+  width: 100px;
+}
+
+/* ==========================================
+   TEMAS VISUAIS DE CERTIFICADOS
+   ========================================== */
+
+/* 1. TEMA CLÁSSICO DOURADO */
+.theme-classic {
+  border: 24px solid #1e3a8a;
+  background-image: radial-gradient(circle, #fcfbf7 0%, #f7f3e8 100%);
+  position: relative;
+}
+
+.theme-classic::after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  border: 2px solid #d97706; /* Borda interna dourada */
+  pointer-events: none;
+}
+
+.theme-classic .cert-logo {
+  background: #1e3a8a;
+  border-color: #d97706;
+}
+
+.theme-classic .cert-title {
+  color: #1e3a8a;
+}
+
+/* 2. TEMA ROYAL NAVY (ASSIMÉTRICO / MODERNO) */
+.theme-royal {
+  border: 2px solid #e2e8f0;
+  background: #ffffff;
+  position: relative;
+}
+
+/* Faixa lateral decorativa azul e dourada */
+.theme-royal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 100%;
+  background: linear-gradient(180deg, #0f172a 0%, #1e3a8a 100%);
+}
+
+.theme-royal::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 40px;
+  width: 8px;
+  height: 100%;
+  background: #d97706;
+}
+
+.theme-royal .cert-header, 
+.theme-royal .cert-title-wrapper, 
+.theme-royal .cert-body, 
+.theme-royal .cert-signatures, 
+.theme-royal .cert-security-footer {
+  padding-left: 60px; /* Deslocar para a direita devido à faixa */
+}
+
+.theme-royal .cert-logo {
+  background: #1e3a8a;
+  border-color: #fff;
+}
+
+.theme-royal .cert-title {
+  color: #0f172a;
+}
+
+/* 3. TEMA MODERN MINIMALIST */
+.theme-modern {
+  border: 2px solid #0f172a;
+  background: #fafafa;
+  position: relative;
+  font-family: 'Inter', sans-serif; /* Todo sem serifa */
+}
+
+/* Cantoneiras modernas minimalistas */
+.theme-modern::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 40px;
+  height: 40px;
+  border-top: 4px solid #0f172a;
+  border-left: 4px solid #0f172a;
+}
+
+.theme-modern::after {
+  content: '';
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-bottom: 4px solid #0f172a;
+  border-right: 4px solid #0f172a;
+}
+
+.theme-modern .cert-institution {
+  color: #0f172a;
+}
+
+.theme-modern .cert-title {
+  color: #0f172a;
+  letter-spacing: 6px;
+  font-weight: 800;
+}
+
+.theme-modern .cert-title-divider {
+  background: #0f172a;
+}
+
+.theme-modern .cert-student-name {
+  border-bottom: 2px solid #0f172a;
+  font-family: 'Outfit', sans-serif;
+  text-transform: uppercase;
+}
+
+/* 4. TEMA ESMERALDA ACADÊMICO */
+.theme-emerald {
+  border: 20px solid #064e3b;
+  background: #f4fbf7;
+  position: relative;
+}
+
+.theme-emerald::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  border: 3px double #d97706;
+  pointer-events: none;
+}
+
+.theme-emerald .cert-logo {
+  background: #064e3b;
+  border-color: #d97706;
+}
+
+.theme-emerald .cert-title {
+  color: #064e3b;
+}
+
+.theme-emerald .cert-title-divider {
+  background: #d97706;
+}
+
+.theme-emerald .cert-course-highlight {
+  color: #064e3b;
+}
+
+/* ==========================================
+   5. TEMA PDF BACKGROUND (CUSTOM TEMPLATES)
+   ========================================== */
+.theme-pdf-background {
+  border: none !important;
+  background-color: transparent !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  box-shadow: none !important;
+  position: relative !important;
+}
+
+.theme-pdf-background::after,
+.theme-pdf-background::before {
+  display: none !important;
+  content: none !important;
+}
+
+/* Ocultar cabeçalho e assinaturas padrões quando usar PDF customizado */
+.theme-pdf-background .cert-header {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+.theme-pdf-background .cert-signatures {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Ajustes de espaçamento do corpo do texto */
+.theme-pdf-background .cert-title-wrapper {
+  margin-top: 130px !important;
+}
+
+.theme-pdf-background .cert-title {
+  color: #1e3a8a !important;
+  font-size: 2.3rem !important;
+  letter-spacing: 2px !important;
+}
+
+.theme-pdf-background .cert-title-divider {
+  display: none !important;
+}
+
+.theme-pdf-background .cert-body {
+  margin-top: 30px !important;
+  padding: 0 80px !important;
+  font-size: 1.35rem !important;
+  line-height: 1.9 !important;
+  color: #1e293b !important;
+  font-weight: 500 !important;
+}
+
+.theme-pdf-background .cert-student-name {
+  font-size: 2.4rem !important;
+  color: #0f172a !important;
+  border-bottom: 2px dashed #0f172a !important;
+  margin: 10px 0 !important;
+  font-weight: 700 !important;
+}
+
+.theme-pdf-background .cert-course-highlight {
+  color: #1e3a8a !important;
+}
+
+/* Posicionar footer de segurança de forma elegante sobrepondo o PDF */
+.theme-pdf-background .cert-security-footer {
+  padding: 0 40px !important;
+  margin-bottom: 20px !important;
+}
+
+.theme-pdf-background .security-info {
+  background: rgba(255, 255, 255, 0.9) !important;
+  padding: 8px 12px !important;
+  border-radius: 6px !important;
+  border: 1px solid #cbd5e1 !important;
+  backdrop-filter: blur(4px) !important;
+}
+
+.theme-pdf-background .security-qr-wrapper {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid #cbd5e1 !important;
+  backdrop-filter: blur(4px) !important;
+}
+
